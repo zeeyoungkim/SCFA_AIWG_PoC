@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_modal import Modal
+import re
 
 if "show_modal" not in st.session_state:
     st.session_state.show_modal = False
@@ -27,22 +28,33 @@ with st.container():
     </style>
     """, unsafe_allow_html=True)
     
-    
     avatar_html = '<div class="avatar-container"><img class="avatar-img" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="default-avatar"></div>'
     st.markdown(avatar_html, unsafe_allow_html=True)
 
-    user_id = st.text_input("User ID", placeholder="Enter your ID", key="user_id_input")
-    phone = st.text_input("Phone Number *", placeholder="Enter your Phone Number", key="phone_input")
+    nickname = st.text_input("Nickname", placeholder="Enter your nickname", key="user_id_input")
+
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        carrier = st.selectbox("Carrier *", ["KT", "NTT Docomo", "China Mobile"], key="carrier_input")
+    with col2:
+        phone = st.text_input("Phone Number *", placeholder="000-0000-0000", key="phone_input")
 
 register_button = st.button("Register", use_container_width=True)
 
-if register_button and phone.strip():
-    st.session_state.show_modal = True
-    modal.open()
+phone_pattern = r'^\d{3}-\d{4}-\d{4}$'
+
+if register_button:
+    if not phone.strip():
+        st.warning("Enter your phone number!!")
+    elif not re.match(phone_pattern, phone.strip()):
+        st.warning("Enter the correct format of your phone number!!")
+    else:
+        st.session_state.show_modal = True
+        modal.open()
 
 if modal.is_open() and st.session_state.show_modal:
     with modal.container():
-        st.write(f"User '{user_id or '...'}' is registered successfully!!")
+        st.write(f"User '{nickname or ''}' is registered successfully!!")
         if st.button("OK", use_container_width=True, key="ok_in_modal"):
             st.session_state.show_modal = False
             st.switch_page("pages/login.py")
