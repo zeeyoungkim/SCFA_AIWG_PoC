@@ -33,3 +33,14 @@ goToApp = st.button("OK", type="primary", use_container_width=True)
 
 if goToApp:
     st.switch_page("pages/login.py")
+
+st.markdown("""
+    <style>
+    .stButton>button {
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 20px;
+        margin: 2px 0px 8px 0px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
