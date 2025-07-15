@@ -1,6 +1,24 @@
 import streamlit as st
 from streamlit_modal import Modal
 
+st.markdown("""
+    <div style="display: flex; justify-content: space-between; align-items: center; height: 54px; margin-bottom: 24px; border-bottom: 1.5px solid #e8e8e8;">
+        <div style="flex:1; display: flex; align-items: center;">
+            <button style="background: none; border: none; cursor: pointer; font-size: 1.7rem; padding-left: 4px;">
+                &#8592;
+            </button>
+        </div>
+        <div style="flex:2; text-align: center; font-size: 1.25rem; font-weight: 700; letter-spacing:0.03em;">
+            USER SETTING
+        </div>
+        <div style="flex:1; display: flex; justify-content: flex-end; align-items: center;">
+            <button id="menu-btn" style="background: none; border: none; cursor: pointer; font-size: 1.7rem; padding-right: 4px;">
+                &#9776;
+            </button>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 if "edit_mode" not in st.session_state:
     st.session_state.edit_mode = False
 if "user_id" not in st.session_state:
@@ -8,7 +26,7 @@ if "user_id" not in st.session_state:
 if "modal_is_open" not in st.session_state:
     st.session_state.modal_is_open = True
 
-modal_1 = Modal("Confirm", key="modal_1", padding=20, max_width=300)
+modal_1 = Modal("Confirm", key="modal_1", padding=20, max_width=450)
 
 def enable_edit_mode():
     st.session_state.edit_mode = True
@@ -60,3 +78,14 @@ if modal_1.is_open():
                 st.session_state.modal_is_open = False
             else:
                 modal_1.close()
+
+st.markdown("""
+    <style>
+    .stButton>button {
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 20px;
+        margin: 2px 0px 8px 0px;
+    }
+    </style>
+    """, unsafe_allow_html=True)

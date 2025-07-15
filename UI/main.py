@@ -1,46 +1,59 @@
 import streamlit as st
 import time
 
+if "user_lang_clicked" not in st.session_state:
+    st.session_state.user_lang_clicked = None
+if "show_warning" not in st.session_state:
+    st.session_state.show_warning = False
+
 with st.container():
     st.image("media/title.svg", use_container_width=True)
     st.image("media/trip.png", use_container_width=True)
 
 with st.container():
     col1, col2, col3 = st.columns(3)
-
     with col1:
-        ko_user = st.button("한국어 사용자", type="primary", use_container_width=True)
-        if ko_user:
-            ko_placeholder = st.empty()
-            with ko_placeholder:
-                st.warning("한국어 서비스로 이동합니다.", width="stretch")
-
-            time.sleep(2)
-            ko_placeholder.empty()
-            time.sleep(1)
-            st.switch_page("pages/userguide.py")
-    
+        if st.button("한국어 사용자", type="primary", use_container_width=True):
+            st.session_state.user_lang_clicked = "ko"
+            st.session_state.show_warning = True
     with col2:
-        jp_user = st.button("日本のユーザー", type="primary", use_container_width=True)
-
-        if jp_user:
-            jp_placeholder = st.empty()
-            with jp_placeholder:
-                st.warning("日本語サービスは準備中です。")
-
-            time.sleep(2)
-            jp_placeholder.empty()
-    
+        if st.button("日本のユーザー", type="primary", use_container_width=True):
+            st.session_state.user_lang_clicked = "jp"
+            st.session_state.show_warning = True
     with col3:
-        cn_user = st.button("中国用户", type="primary", use_container_width=True)
+        if st.button("中国用户", type="primary", use_container_width=True):
+            st.session_state.user_lang_clicked = "cn"
+            st.session_state.show_warning = True
 
-        if cn_user:
-            cn_placeholder = st.empty()
-            with cn_placeholder:
-                st.warning("中文服务正在筹备中。")
+warning_placeholder = st.empty()
 
-            time.sleep(2)
-            cn_placeholder.empty()
+if st.session_state.show_warning:
+    lang = st.session_state.user_lang_clicked
+    if lang == "ko":
+        msg = "한국어 서비스로 이동합니다."
+        with warning_placeholder:
+            st.warning(msg)
+        time.sleep(2)
+        warning_placeholder.empty()
+        st.session_state.show_warning = False
+        st.session_state.user_lang_clicked = None
+        st.switch_page("pages/userguide.py")
+    elif lang == "jp":
+        msg = "日本語サービスは準備中です。"
+        with warning_placeholder:
+            st.warning(msg)
+        time.sleep(2)
+        warning_placeholder.empty()
+        st.session_state.show_warning = False
+        st.session_state.user_lang_clicked = None
+    elif lang == "cn":
+        msg = "中文服务正在筹备中。"
+        with warning_placeholder:
+            st.warning(msg)
+        time.sleep(2)
+        warning_placeholder.empty()
+        st.session_state.show_warning = False
+        st.session_state.user_lang_clicked = None
 
 st.markdown("""
     <style>

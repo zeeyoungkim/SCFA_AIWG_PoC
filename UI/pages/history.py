@@ -1,5 +1,23 @@
 import streamlit as st
 
+st.markdown("""
+    <div style="display: flex; justify-content: space-between; align-items: center; height: 54px; margin-bottom: 24px; border-bottom: 1.5px solid #e8e8e8;">
+        <div style="flex:1; display: flex; align-items: center;">
+            <button style="background: none; border: none; cursor: pointer; font-size: 1.7rem; padding-left: 4px;">
+                &#8592;
+            </button>
+        </div>
+        <div style="flex:2; text-align: center; font-size: 1.25rem; font-weight: 700; letter-spacing:0.03em;">
+            HISTORY
+        </div>
+        <div style="flex:1; display: flex; justify-content: flex-end; align-items: center;">
+            <button id="menu-btn" style="background: none; border: none; cursor: pointer; font-size: 1.7rem; padding-right: 4px;">
+                &#9776;
+            </button>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 col1, col2 = st.columns([4, 1])
 
 with col1:
@@ -12,7 +30,7 @@ with col2:
             }
         </style>
     """, unsafe_allow_html=True)
-    st.button("Search", use_container_width=True, key="search_button")
+    search_btn = st.button("Search", use_container_width=True, key="search_button")
 
 st.markdown("---", unsafe_allow_html=True)
 
@@ -70,5 +88,31 @@ cards = [
     },
 ]
 
-for card in cards:
-    card_box(location=card["location"], date=card["date"], interest=card["interest"], summary=card["summary"])
+if "filtered_cards" not in st.session_state:
+    st.session_state.filtered_cards = cards
+
+if search_btn:
+    keyword = search.strip().lower()
+    if keyword:
+        st.session_state.filtered_cards = [
+            card for card in cards if keyword in card["interest"].lower()
+        ]
+    else:
+        st.session_state.filtered_cards = cards
+
+if st.session_state.filtered_cards:
+    for card in st.session_state.filtered_cards:
+        card_box(location=card["location"], date=card["date"], interest=card["interest"], summary=card["summary"])
+else:
+    st.info("No results found.")
+
+st.markdown("""
+    <style>
+    .stButton>button {
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 20px;
+        margin: 2px 0px 8px 0px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
