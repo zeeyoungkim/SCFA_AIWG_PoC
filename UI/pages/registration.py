@@ -5,7 +5,7 @@ import re
 if "show_modal" not in st.session_state:
     st.session_state.show_modal = False
 
-modal = Modal("Confirm", key="modal", padding=20, max_width=300)
+modal = Modal("Registration", key="modal", padding=20, max_width=450)
 
 with st.container():
     st.markdown("""
@@ -54,7 +54,18 @@ if register_button:
 
 if modal.is_open() and st.session_state.show_modal:
     with modal.container():
-        st.write(f"User '{nickname or ''}' is registered successfully!!")
+        st.write(f"User {nickname.upper() or ''} is registered successfully!!")
         if st.button("OK", use_container_width=True, key="ok_in_modal"):
             st.session_state.show_modal = False
             st.switch_page("pages/login.py")
+
+st.markdown("""
+    <style>
+    .stButton>button {
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 20px;
+        margin: 2px 0px 8px 0px;
+    }
+    </style>
+    """, unsafe_allow_html=True)

@@ -41,3 +41,14 @@ with st.container():
 
             time.sleep(2)
             cn_placeholder.empty()
+
+st.markdown("""
+    <style>
+    .stButton>button {
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-radius: 20px;
+        margin: 2px 0px 8px 0px;
+    }
+    </style>
+    """, unsafe_allow_html=True)
