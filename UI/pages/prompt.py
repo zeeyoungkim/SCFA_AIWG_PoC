@@ -1,6 +1,11 @@
 import streamlit as st
 import time
 
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "agent", "content": "Hello! I'm K-Agent. What can I do for you?"}
+    ]
+
 st.markdown("""
     <div style="display: flex; justify-content: space-between; align-items: center; height: 54px; margin-bottom: 24px; border-bottom: 1.5px solid #e8e8e8;">
         <div style="flex:1; display: flex; align-items: center;">
@@ -9,7 +14,7 @@ st.markdown("""
             </button>
         </div>
         <div style="flex:2; text-align: center; font-size: 1.25rem; font-weight: 700; letter-spacing:0.03em;">
-            KT AGENT
+            KT AGENT (Sample Dialog)
         </div>
         <div style="flex:1; display: flex; justify-content: flex-end; align-items: center;">
             <button id="menu-btn" style="background: none; border: none; cursor: pointer; font-size: 1.7rem; padding-right: 4px;">
@@ -18,10 +23,6 @@ st.markdown("""
         </div>
     </div>
     """, unsafe_allow_html=True)
-
-st.session_state.messages = [
-    {"role": "agent", "content": "Hello! What can I do for you?"}
-]
 
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
@@ -32,11 +33,38 @@ if prompt := st.chat_input("Enter prompt..."):
     with st.chat_message("user"):
         st.write(prompt)
     
-    with st.spinner(text="Thinking...", show_time=False):
-        time.sleep(3)
+    # with st.spinner(text="Thinking...", show_time=False):
+    #     time.sleep(3)
 
-    agent_reply = "OK. Please share some detailed location for the recommendation."
+    if "have a reservation" in prompt:
+        with st.spinner(text="Thinking...", show_time=False):
+            time.sleep(3)
+        agent_reply = "Please wait. I will ask to other agents for checking."
+        
+        with st.chat_message("agent"):
+            st.write(agent_reply)
+        
+        with st.spinner(text="Thinking...", show_time=False):
+            time.sleep(3)
+        agent_reply = "Thank you for waiting. NTT Docomo is available on July 27th through 2PM to 3PM and China Mobile is avaiable on the same day at 3PM."
+        
+        with st.chat_message("agent"):
+            st.write(agent_reply)
+        st.session_state.messages.append({"role": "agent", "content": agent_reply})
+    elif "available" in prompt:
+        with st.spinner(text="Thinking...", show_time=False):
+            time.sleep(3)
+        agent_reply = "The reservation is confirmed on July 27th at 3PM."
+        
+        with st.chat_message("agent"):
+            st.write(agent_reply)
+        st.session_state.messages.append({"role": "agent", "content": agent_reply})
+    
     st.session_state.messages.append({"role": "agent", "content": agent_reply})
     
-    with st.chat_message("agent"):
-        st.write(agent_reply)
+    # with st.chat_message("agent"):
+    #     st.write(agent_reply)
+
+### Sample Script
+### I would like to have a reservation in the Italian restaurant between July 25th and July 27th.
+### I might also be available at 3PM at that day. Please let them know.
