@@ -1,0 +1,14 @@
+
+<svg width="800" height="120" viewBox="0 0 800 120" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .text {
+      font-family: 'Segoe Script', 'Dancing Script', cursive;
+      font-weight: bold;
+      font-size: 64px;
+      fill: #111;
+    }
+  </style>
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" class="text">
+    MY BUCKET AGENT
+  </text>
+</svg>
